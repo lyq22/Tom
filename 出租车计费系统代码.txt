@@ -1,0 +1,34 @@
+#include <iostream>
+#include <ctime>
+using namespace std;
+int main()
+{   time_t now;
+    struct tm*fmt;
+    time(&now);
+    fmt=localtime(&now);
+    float R=0,T;                //R为费用;T为乘车时间点；
+    int t,b;                 //t为等待时间；b为等待时间个数（基数5min）；
+    cout<<"                                                         **********************************"<<endl;
+    T=(fmt->tm_hour);
+    cout<<"                                                          您好，您乘车过程中的起始时间为："<<T<<"时"<<endl;;
+    cout<<"                                                               欢迎使用 出租车收费系统"<<endl;
+    cout<<"                                                          您好，请输入乘车过程中的等待时间(单位：s）：";
+    cin>>t;
+    if(t<300) R=R+0;
+    else {  b=t/300; R=R+2*b;}
+    int r;float p;        //r为起步价；p为超出3km后每公里的单价；
+    if(T>=7&&T<=23) { r=10;p=2;}
+    if((T<=24&&T>=23)||T<7) { r=12;p=2.3;}
+    int S,k,z;float s;           //s为实际里程数；S为大约里程数，方便计算费用而存在；k为大于3km的里程数；z为大于15km的里程数；
+    cout<<"                                                          您好，请输入乘车过程中的里程（单位：km）: ";
+    cin>>s;
+    S=s;
+    if(s>S) S=S+1;               //解决不足1公里按1公里算问题；
+    if(S<=3) R=R+r;  if(S>3) {k=S-3;R=R+r+k*p;}
+    if(S>15){z=S-15;R=R+z;}
+    if(s==0&&t==0) R=0;
+    cout<<"                                                           您好，您乘车的费用为："<<R<<"元"<<endl;
+    cout<<"                                                                  欢迎下次乘车"<<endl;
+    cout<<"                                                          *************************"<<endl;
+    return 0;
+}
